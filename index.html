@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartSpend - Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo">
+        <i class="fas fa-wallet"></i>
+        <h1>SmartSpend</h1>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-view="dashboard">
+          <i class="fas fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-view="expenses">
+          <i class="fas fa-list"></i>
+          <span>Expenses</span>
+        </a>
+        <a href="#" class="nav-item" data-view="add">
+          <i class="fas fa-plus-circle"></i>
+          <span>Add Expense</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <p>&copy; 2026 SmartSpend</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="main-header">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="header-search">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Search expenses...">
+        </div>
+        <div class="header-summary">
+          <span id="totalExpensesDisplay">$0.00</span>
+          <small>Total Spent</small>
+        </div>
+      </header>
+
+      <div class="views">
+        <!-- Dashboard View -->
+        <section class="view active" id="view-dashboard">
+          <h2 class="view-title">Dashboard</h2>
+          <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-dollar-sign"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Total Expenses</span>
+                <span class="stat-value" id="statTotal">$0.00</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-receipt"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Transactions</span>
+                <span class="stat-value" id="statCount">0</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-calendar-month"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">This Month</span>
+                <span class="stat-value" id="statMonth">$0.00</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-tag"></i>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Categories</span>
+                <span class="stat-value" id="statCategories">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="dashboard-grid">
+            <div class="card" id="categoryChartCard">
+              <h3><i class="fas fa-chart-bar"></i> Spending by Category</h3>
+              <div class="chart-container" id="categoryChart"></div>
+            </div>
+            <div class="card" id="recentExpensesCard">
+              <h3><i class="fas fa-clock"></i> Recent Expenses</h3>
+              <div class="recent-list" id="recentList"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Expenses View -->
+        <section class="view" id="view-expenses">
+          <div class="view-header">
+            <h2 class="view-title">All Expenses</h2>
+            <div class="filter-controls">
+              <select id="filterCategory">
+                <option value="all">All Categories</option>
+              </select>
+              <select id="filterSort">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="highest">Highest Amount</option>
+                <option value="lowest">Lowest Amount</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="expense-table" id="expenseTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Amount</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="expenseTableBody"></tbody>
+            </table>
+          </div>
+          <p class="empty-state" id="emptyExpenses">No expenses yet. Start tracking!</p>
+        </section>
+
+        <!-- Add Expense View -->
+        <section class="view" id="view-add">
+          <h2 class="view-title">Add New Expense</h2>
+          <form class="expense-form" id="expenseForm">
+            <div class="form-group">
+              <label for="expenseName">
+                <i class="fas fa-pen"></i> Expense Name
+              </label>
+              <input type="text" id="expenseName" placeholder="e.g. Groceries, Netflix..." required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="expenseAmount">
+                  <i class="fas fa-dollar-sign"></i> Amount
+                </label>
+                <input type="number" id="expenseAmount" placeholder="0.00" min="0.01" step="0.01" required>
+              </div>
+              <div class="form-group">
+                <label for="expenseCategory">
+                  <i class="fas fa-tag"></i> Category
+                </label>
+                <select id="expenseCategory" required>
+                  <option value="">Select category</option>
+                  <option value="Food & Dining">Food & Dining</option>
+                  <option value="Transportation">Transportation</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Bills & Utilities">Bills & Utilities</option>
+                  <option value="Health">Health</option>
+                  <option value="Education">Education</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="expenseDate">
+                <i class="fas fa-calendar"></i> Date
+              </label>
+              <input type="date" id="expenseDate" required>
+            </div>
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-plus"></i> Add Expense
+            </button>
+          </form>
+          <div class="quick-actions">
+            <h3>Quick Add</h3>
+            <div class="quick-buttons" id="quickButtons">
+              <button class="quick-btn" data-amount="4.99" data-category="Entertainment" data-name="Netflix">
+                <i class="fas fa-film"></i> Netflix $4.99
+              </button>
+              <button class="quick-btn" data-amount="15.00" data-category="Food & Dining" data-name="Lunch">
+                <i class="fas fa-utensils"></i> Lunch $15
+              </button>
+              <button class="quick-btn" data-amount="3.50" data-category="Food & Dining" data-name="Coffee">
+                <i class="fas fa-mug-hot"></i> Coffee $3.50
+              </button>
+              <button class="quick-btn" data-amount="50" data-category="Bills & Utilities" data-name="Electric Bill">
+                <i class="fas fa-bolt"></i> Electric $50
+              </button>
+              <button class="quick-btn" data-amount="2.99" data-category="Shopping" data-name="Amazon">
+                <i class="fas fa-box"></i> Amazon $2.99
+              </button>
+              <button class="quick-btn" data-amount="12.99" data-category="Entertainment" data-name="Spotify">
+                <i class="fas fa-music"></i> Spotify $12.99
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
