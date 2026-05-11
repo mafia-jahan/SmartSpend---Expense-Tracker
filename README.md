@@ -23,3 +23,7 @@ A modern, dark-themed expense tracker built with vanilla HTML, CSS, and JavaScri
 ## Tech Stack
 
 HTML5, CSS3 (Flexbox/Grid, Custom Properties, Animations), Vanilla JavaScript (ES6+)
+
+## Live Demo
+
+https://mafia-jahan.github.io/SmartSpend---Expense-Tracker/
